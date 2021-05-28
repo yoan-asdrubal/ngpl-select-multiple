@@ -1,6 +1,6 @@
 {
-  "name": "ngpl-select",
-  "version": "1.0.2",
+  "name": "ngpl-select-multiple",
+  "version": "1.0.3",
   "peerDependencies": {
     "ngpl-common": "1.0.17"
   },

@@ -1,0 +1,124 @@
+<section>
+  <h1>NGPL SELECT</h1>
+  <div>
+    <mat-checkbox [formControl]="disableControl" class="mr-3">
+      Disable Control
+    </mat-checkbox>
+    <mat-checkbox [formControl]="readOnlyControl" class="mr-3">
+      ReadOnly Control
+    </mat-checkbox>
+  </div>
+  <form [formGroup]="formGroup" fxLayout="column">
+    <div fxLayout fxLayoutAlign="space-around">
+      <ngpl-select-multiple ngplWidth="250px"
+                   [ngplDisableControl]="disableControl.value"
+                   placeHolder="Id as Value"
+                   propValue="id"
+                   [readOnlyControl]="readOnlyControl.value"
+                   formControlName="select"
+                   [items]="items">
+
+      </ngpl-select-multiple>
+      <ngpl-select-multiple ngplWidth="250px"
+                   [ngplDisableControl]="disableControl.value"
+                   placeHolder="Object as Value"
+                   [readOnlyControl]="readOnlyControl.value"
+                   formControlName="select1"
+                   [items]="items">
+
+      </ngpl-select-multiple>
+      <ngpl-select-multiple ngplWidth="250px"
+                   placeHolder="Label Function"
+                   propValue="descripcion"
+                   [readOnlyControl]="readOnlyControl.value"
+                   formControlName="select2"
+                   [labelFn]="labelFn"
+                   [items]="items">
+      </ngpl-select-multiple>
+
+
+    </div>
+    <div fxLayout fxLayoutAlign="space-around">
+
+      <ngpl-select-multiple ngplWidth="250px"
+                   placeHolder="No Result Template"
+                   propValue="descripcion"
+                   [readOnlyControl]="readOnlyControl.value"
+                   formControlName="select3"
+                   [filterBy]="'descripcion'"
+                   [noResultTemplate]="noResult"
+                   [items]="items">
+      </ngpl-select-multiple>
+
+      <ngpl-select-multiple ngplWidth="250px"
+                   placeHolder="No All Options"
+                   propValue="descripcion"
+                   showAllOption="false"
+                   [readOnlyControl]="readOnlyControl.value"
+                   formControlName="select4"
+                   [items]="items">
+      </ngpl-select-multiple>
+
+      <ngpl-select-multiple ngplWidth="250px"
+                   placeHolder="No Searcheable"
+                   propValue="descripcion"
+                   searcheable="false"
+                   [readOnlyControl]="readOnlyControl.value"
+                   formControlName="select5"
+                   [items]="items">
+      </ngpl-select-multiple>
+
+    </div>
+    <div fxLayout fxLayoutAlign="space-around" class="mt-3">
+      <ngpl-select-multiple
+        [ngplDisableControl]="disableControl.value"
+        [readOnlyControl]="readOnlyControl.value"
+        formControlName="select6"
+        appearance="outline"
+        panelWidth="270px"
+        [orderSelection]="true"
+        ngplWidth="250px"
+        placeHolder="Multiple order"
+        [items]="items">
+
+      </ngpl-select-multiple>
+
+      <ngpl-select-multiple
+        [ngplDisableControl]="disableControl.value"
+        [readOnlyControl]="readOnlyControl.value"
+        formControlName="select7"
+        appearance="outline"
+        panelWidth="270px"
+        [orderSelection]="true"
+        [orderBackgroundColor]="'red'"
+        [orderColor]="'white'"
+        ngplWidth="250px"
+        placeHolder="Multiple red order"
+        [items]="items">
+
+      </ngpl-select-multiple>
+      <ngpl-select-multiple
+        [ngplDisableControl]="disableControl.value"
+        [readOnlyControl]="readOnlyControl.value"
+        formControlName="select8"
+        appearance="outline"
+        panelWidth="270px"
+        ngplWidth="250px"
+        placeHolder="Multiple #cccccc order"
+        [items]="items">
+
+      </ngpl-select-multiple>
+
+    </div>
+    <ng-template #noResult let-search='search'>
+      <div>
+        <h1>No Items Found to {{search}}</h1>
+      </div>
+    </ng-template>
+  </form>
+  <div fxLayout="" fxLayoutAlign="space-between">
+    <pre>{{formGroup.value | json}}</pre>
+    <pre>{{formGroup.getRawValue() | json}}</pre>
+  </div>
+
+</section>

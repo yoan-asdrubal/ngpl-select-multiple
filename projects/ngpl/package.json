@@ -1,0 +1,11 @@
+{
+  "name": "ngpl-select",
+  "version": "1.0.1",
+  "peerDependencies": {
+    "ngpl-common": "1.0.17"
+  },
+
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
+}

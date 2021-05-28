@@ -1,0 +1,68 @@
+{
+  "name": "ngpl-library",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --host serverlocal.defontana.com --port 4200",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "build:lib": "ng build ngpl --prod",
+    "test:lib": "jest",
+    "test:lib:coverage": "jest --coverage"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "~11.0.5",
+    "@angular/cdk": "^11.2.0",
+    "@angular/common": "~11.0.5",
+    "@angular/compiler": "~11.0.5",
+    "@angular/core": "~11.0.5",
+    "@angular/flex-layout": "10.0.0-beta.32",
+    "@angular/forms": "~11.0.5",
+    "@angular/material": "^11.2.0",
+    "@angular/material-moment-adapter": "^11.2.0",
+    "@angular/platform-browser": "~11.0.5",
+    "@angular/platform-browser-dynamic": "~11.0.5",
+    "@angular/router": "~11.0.5",
+    "@ngneat/until-destroy": "^8.0.3",
+    "ngpl-common": "^1.0.18",
+    "ngx-reactivetoolkit": "^8.0.2",
+    "rxjs": "~6.6.0",
+    "tslib": "^2.0.0",
+    "zone.js": "~0.10.2"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~0.1100.5",
+    "@angular/cli": "~11.0.5",
+    "@angular/compiler-cli": "~11.0.5",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^12.11.1",
+    "codelyzer": "^6.0.0",
+    "jest": "^26.6.3",
+    "jest-preset-angular": "^8.4.0",
+    "karma-coverage": "~2.0.3",
+    "ng-packagr": "^11.0.0",
+    "protractor": "~7.0.0",
+    "ts-node": "~8.3.0",
+    "tslint": "~6.1.0",
+    "typescript": "~4.0.2"
+  },
+  "jest": {
+    "preset": "jest-preset-angular",
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupJest.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/dist/"
+    ],
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "<rootDir>/tsconfig.spec.json",
+        "stringifyContentPathRegex": "\\.html$"
+      }
+    }
+  }
+}

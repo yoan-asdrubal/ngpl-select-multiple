@@ -1,0 +1,10 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/ngpl",
+  "assets": [
+    "../../src/app/ngpl/src/styles/*"
+  ],
+  "lib": {
+    "entryFile": "../../src/app/ngpl/src/public-api.ts"
+  }
+}

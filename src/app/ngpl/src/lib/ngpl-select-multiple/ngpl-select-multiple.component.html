@@ -1,0 +1,80 @@
+<mat-form-field class="widget-autocomplete-multiple-mat-form-field {{customClass}}"
+                [class.hide-theme-color]="hideThemeColorClass ===true"
+                [floatLabel]="floatLabel"
+                color="accent"
+                [appearance]="appearance"
+                [class.no-empty]="noEmptyClass===true">
+  <mat-label> {{ skeleton && !inputFormControl.value ? '' : placeHolder}}</mat-label>
+  <label [ngStyle]="{backgroundColor: orderBackgroundColor, color: orderColor}"
+         class="total-selected mr-2 "
+         *ngIf="_selectedValue?.length > 0 && showTotalSelected === true">{{_selectedValue?.length}}</label>
+  <ngpl-skeleton width="75%" height="15px" [isLoading]="skeleton">
+    <input class="customInput" matInput type="text"
+           [ngplDisableControl]="disabledControl"
+           [readOnly]="readOnlyControl"
+           (keydown)="$event.preventDefault(); $event.stopPropagation()"
+           [formControl]="inputFormControl"
+           [matAutocomplete]="search_autocomplete"
+           [matAutocompleteConnectedTo]="null">
+  </ngpl-skeleton>
+  <mat-icon class="arrow" matSuffix *ngIf="skeleton!==true">arrow_drop_down</mat-icon>
+
+  <mat-autocomplete #search_autocomplete="matAutocomplete"
+                    class="widget-autocomplete-multiple-mat-autocomplete"
+                    (opened)="inputSearchFocus()"
+                    [panelWidth]="panelWidth">
+    <mat-option *ngIf="searcheable===true" class="widget-autocomplete-multiple-search" disabled="disabled"
+                (click)="$event.preventDefault()"
+                [class.sticky]="stickSearch">
+      <div class="widget-filter-search-result-header">
+        <div class="widget-autocomplete-multiple-search-div-1">
+          <ng-template [ngIf]="showIconSearch === true ">
+            <mat-icon matSuffix *ngIf="searchFormCtrl.value.length === 0">search</mat-icon>
+            <mat-icon matSuffix *ngIf="searchFormCtrl.value.length !== 0" (click)="clearSearch($event)">
+              close
+            </mat-icon>
+          </ng-template>
+          <input #searchInput matInput placeholder="Buscar" [formControl]="searchFormCtrl"
+                 autocomplete="off">
+        </div>
+      </div>
+    </mat-option>
+
+    <mat-divider></mat-divider>
+    <mat-selection-list (selectionChange)="onItemsSelectionChange($event)">
+      <mat-list-option [id]="item?.id"
+                       *ngFor="let item of filteredItems$ | async" [value]="item"
+                       [selected]="itemsSelected.isSelected(item)"
+                       [class.selected]="itemsSelected.isSelected(item)"
+                       checkboxPosition="before">
+        <div>
+          <div>
+            <span> {{(labelFn ? labelFn(item) : item[propLabel] || item) }}</span>
+          </div>
+        </div>
+        <div class="orderSelection" [ngStyle]="{backgroundColor: orderBackgroundColor, color: orderColor}"
+             *ngIf="!!orderSelection && itemsSelected.isSelected(item)">{{itemsSelected.selectedValues().indexOf(item) + 1}}</div>
+      </mat-list-option>
+      <mat-option [style.display]="'none'"></mat-option>
+    </mat-selection-list>
+    <mat-option *ngIf="filteredItems.length === 0 " class="widget-autocomplete-multiple-search"
+                disabled="disabled" (click)="$event.preventDefault()"
+                [class.sticky]="stickSearch">
+      <ng-container
+        [ngTemplateOutlet]="noResultTemplate ? noResultTemplate : widgetSelectSearchableNoResults"
+        [ngTemplateOutletContext]="{search:searchFormCtrl?.value}">
+      </ng-container>
+    </mat-option>
+    <!--				<app-loading *ngIf="searching" height="215px"></app-loading>-->
+  </mat-autocomplete>
+
+
+</mat-form-field>
+<ng-template #widgetSelectSearchableNoResults let-search='search'>
+  <div class="no-result-content">
+    No hay coincidencias
+  </div>
+</ng-template>
+
+<!--End Periodo-->
+<!--{{itemsSelected.selectedValues()  | json}}-->

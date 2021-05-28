@@ -1,0 +1,16 @@
+@import 'app/ngpl/src/styles';
+/* You can add global styles to this file, and also import other style files */
+//@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+@import url('https://cdn.quilljs.com/1.2.2/quill.snow.css');
+@import url('https://cdn.quilljs.com/1.2.2/quill.bubble.css');
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Source Sans Pro", "Helvetica Neue", sans-serif;
+}

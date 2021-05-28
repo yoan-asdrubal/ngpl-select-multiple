@@ -1,0 +1,32 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>NGPL-SELECT</mat-toolbar>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+<!--      <mat-list-item  >-->
+<!--        <mat-icon mat-list-icon>note</mat-icon>-->
+<!--        <div >Pipe</div>-->
+<!--      </mat-list-item>-->
+      <a mat-list-item routerLink="/ngpl-select-multiple">Ngpl Select Multiple</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span class="full-width">defontana-library</span>
+    </mat-toolbar>
+    <section class="m-3" id="app-container">
+      <router-outlet></router-outlet>
+    </section>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,23 @@
+
+.pointer {
+  cursor: pointer !important;
+}
+.disabled {
+  color: #cccccc;
+  &:not(.pointer) {
+    cursor: default!important;
+  }
+}
+
+.fs-small {
+  font-size: 16px;
+}
+
+.fs-normal {
+  font-size: 24px;
+}
+
+.fs-large {
+  font-size: 32px;
+}
+

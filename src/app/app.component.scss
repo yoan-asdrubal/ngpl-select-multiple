@@ -1,0 +1,14 @@
+.menu {
+  display: flex;
+  justify-content: center;
+
+  li {
+    height: 30px;
+    border-radius: 3px;
+    margin: 0 15px;
+
+    a {
+      text-decoration: none;
+    }
+  }
+}

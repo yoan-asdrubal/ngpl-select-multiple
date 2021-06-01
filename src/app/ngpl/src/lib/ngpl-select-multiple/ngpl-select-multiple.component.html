@@ -1,8 +1,8 @@
 <mat-form-field class="widget-autocomplete-multiple-mat-form-field {{customClass}}"
-                [floatLabel]="showLoading ? 'always' : 'never'"
+                [floatLabel]="showLoading ? 'always' : floatLabel"
                 color="accent"
                 [appearance]="appearance">
-  <mat-label> {{ placeHolder}} {{ showLoading }}</mat-label>
+  <mat-label> {{ placeHolder}}  </mat-label>
   <label [ngStyle]="{backgroundColor: orderBackgroundColor, color: orderColor}"
          class="total-selected mr-2 "
          *ngIf="_selectedValue?.length > 0 && showTotalSelected === true && !showLoading">{{_selectedValue?.length}}</label>

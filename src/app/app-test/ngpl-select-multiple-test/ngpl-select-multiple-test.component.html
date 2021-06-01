@@ -7,33 +7,39 @@
     <mat-checkbox [formControl]="readOnlyControl" class="mr-3">
       ReadOnly Control
     </mat-checkbox>
+    <mat-checkbox [formControl]="loadingControl" class="mr-3">
+      Show Loading
+    </mat-checkbox>
   </div>
   <form [formGroup]="formGroup" fxLayout="column">
     <div fxLayout fxLayoutAlign="space-around">
       <ngpl-select-multiple ngplWidth="250px"
-                   [ngplDisableControl]="disableControl.value"
-                   placeHolder="Id as Value"
-                   propValue="id"
-                   [readOnlyControl]="readOnlyControl.value"
-                   formControlName="select"
-                   [items]="items">
+                            [ngplDisableControl]="disableControl.value"
+                            placeHolder="Id as Value"
+                            propValue="id"
+                            [readOnlyControl]="readOnlyControl.value"
+                            [showLoading]="loadingControl.value"
+                            formControlName="select"
+                            [items]="items">
 
       </ngpl-select-multiple>
       <ngpl-select-multiple ngplWidth="250px"
-                   [ngplDisableControl]="disableControl.value"
-                   placeHolder="Object as Value"
-                   [readOnlyControl]="readOnlyControl.value"
-                   formControlName="select1"
-                   [items]="items">
+                            [ngplDisableControl]="disableControl.value"
+                            placeHolder="Object as Value"
+                            [showLoading]="loadingControl.value"
+                            [readOnlyControl]="readOnlyControl.value"
+                            formControlName="select1"
+                            [items]="items">
 
       </ngpl-select-multiple>
       <ngpl-select-multiple ngplWidth="250px"
-                   placeHolder="Label Function"
-                   propValue="descripcion"
-                   [readOnlyControl]="readOnlyControl.value"
-                   formControlName="select2"
-                   [labelFn]="labelFn"
-                   [items]="items">
+                            placeHolder="Label Function"
+                            propValue="descripcion"
+                            [showLoading]="loadingControl.value"
+                            [readOnlyControl]="readOnlyControl.value"
+                            formControlName="select2"
+                            [labelFn]="labelFn"
+                            [items]="items">
       </ngpl-select-multiple>
 
 
@@ -41,31 +47,34 @@
     <div fxLayout fxLayoutAlign="space-around">
 
       <ngpl-select-multiple ngplWidth="250px"
-                   placeHolder="No Result Template"
-                   propValue="descripcion"
-                   [readOnlyControl]="readOnlyControl.value"
-                   formControlName="select3"
-                   [filterBy]="'descripcion'"
-                   [noResultTemplate]="noResult"
-                   [items]="items">
+                            placeHolder="No Result Template"
+                            propValue="descripcion"
+                            [showLoading]="loadingControl.value"
+                            [readOnlyControl]="readOnlyControl.value"
+                            formControlName="select3"
+                            [filterBy]="'descripcion'"
+                            [noResultTemplate]="noResult"
+                            [items]="items">
       </ngpl-select-multiple>
 
       <ngpl-select-multiple ngplWidth="250px"
-                   placeHolder="No All Options"
-                   propValue="descripcion"
-                   showAllOption="false"
-                   [readOnlyControl]="readOnlyControl.value"
-                   formControlName="select4"
-                   [items]="items">
+                            placeHolder="No All Options"
+                            propValue="descripcion"
+                            showAllOption="false"
+                            [showLoading]="loadingControl.value"
+                            [readOnlyControl]="readOnlyControl.value"
+                            formControlName="select4"
+                            [items]="items">
       </ngpl-select-multiple>
 
       <ngpl-select-multiple ngplWidth="250px"
-                   placeHolder="No Searcheable"
-                   propValue="descripcion"
-                   searcheable="false"
-                   [readOnlyControl]="readOnlyControl.value"
-                   formControlName="select5"
-                   [items]="items">
+                            placeHolder="No Searcheable"
+                            propValue="descripcion"
+                            searcheable="false"
+                            [showLoading]="loadingControl.value"
+                            [readOnlyControl]="readOnlyControl.value"
+                            formControlName="select5"
+                            [items]="items">
       </ngpl-select-multiple>
 
     </div>
@@ -73,19 +82,20 @@
       <ngpl-select-multiple
         [ngplDisableControl]="disableControl.value"
         [readOnlyControl]="readOnlyControl.value"
+        [showLoading]="loadingControl.value"
         formControlName="select6"
-        appearance="outline"
         panelWidth="270px"
         [orderSelection]="true"
         ngplWidth="250px"
-        placeHolder="Multiple order"
+        placeHolder="Custom template inside component"
         [items]="items">
-
       </ngpl-select-multiple>
 
       <ngpl-select-multiple
         [ngplDisableControl]="disableControl.value"
         [readOnlyControl]="readOnlyControl.value"
+        [showLoading]="loadingControl.value"
+        showLoadingWidth="40%"
         formControlName="select7"
         appearance="outline"
         panelWidth="270px"
@@ -100,11 +110,14 @@
       <ngpl-select-multiple
         [ngplDisableControl]="disableControl.value"
         [readOnlyControl]="readOnlyControl.value"
+        [showLoading]="loadingControl.value"
+        showLoadingWidth="200px"
         formControlName="select8"
-        appearance="outline"
-        panelWidth="270px"
+        appearance="standard"
+        panelWidth="300px"
         ngplWidth="250px"
-        placeHolder="Multiple #cccccc order"
+        [itemTemplate]="selectMultipleItemTemplate"
+        placeHolder="Custom Item Template"
         [items]="items">
 
       </ngpl-select-multiple>
@@ -115,8 +128,22 @@
         <h1>No Items Found to {{search}}</h1>
       </div>
     </ng-template>
+
+    <ng-template #selectMultipleItemTemplate let-item='item' let-order='order'>
+      <div fxLayout fxLayoutAlign="space-between center" class="item-template">
+        <mat-icon class="mr-2 "
+                  [class.odd]="item.id % 2 === 0"
+                  [class.even]="item.id % 2 !== 0">
+          {{item.id % 2 === 0 ? "3d_rotation" : 'more_vert'}}</mat-icon>
+        <p>{{item.id}} {{item.descripcion}}</p>
+        <p *ngIf="order > 0" class="order">
+          {{order}}
+        </p>
+      </div>
+    </ng-template>
   </form>
-  <div fxLayout="" fxLayoutAlign="space-between">
+
+  <div fxLayout="" fxLayoutAlign="space-around" ngplWidth="100%">
     <pre>{{formGroup.value | json}}</pre>
     <pre>{{formGroup.getRawValue() | json}}</pre>
   </div>

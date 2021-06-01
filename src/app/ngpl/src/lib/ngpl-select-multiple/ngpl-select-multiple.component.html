@@ -1,14 +1,12 @@
 <mat-form-field class="widget-autocomplete-multiple-mat-form-field {{customClass}}"
-                [class.hide-theme-color]="hideThemeColorClass ===true"
-                [floatLabel]="floatLabel"
+                [floatLabel]="showLoading ? 'always' : 'never'"
                 color="accent"
-                [appearance]="appearance"
-                [class.no-empty]="noEmptyClass===true">
-  <mat-label> {{ skeleton && !inputFormControl.value ? '' : placeHolder}}</mat-label>
+                [appearance]="appearance">
+  <mat-label> {{ placeHolder}} {{ showLoading }}</mat-label>
   <label [ngStyle]="{backgroundColor: orderBackgroundColor, color: orderColor}"
          class="total-selected mr-2 "
-         *ngIf="_selectedValue?.length > 0 && showTotalSelected === true">{{_selectedValue?.length}}</label>
-  <ngpl-skeleton width="75%" height="15px" [isLoading]="skeleton">
+         *ngIf="_selectedValue?.length > 0 && showTotalSelected === true && !showLoading">{{_selectedValue?.length}}</label>
+  <ngpl-skeleton [width]="showLoadingWidth" [height]="showLoadingHeight" [isLoading]="showLoading">
     <input class="customInput" matInput type="text"
            [ngplDisableControl]="disabledControl"
            [readOnly]="readOnlyControl"
@@ -17,7 +15,7 @@
            [matAutocomplete]="search_autocomplete"
            [matAutocompleteConnectedTo]="null">
   </ngpl-skeleton>
-  <mat-icon class="arrow" matSuffix *ngIf="skeleton!==true">arrow_drop_down</mat-icon>
+  <mat-icon class="arrow" matSuffix *ngIf="showLoading!==true">arrow_drop_down</mat-icon>
 
   <mat-autocomplete #search_autocomplete="matAutocomplete"
                     class="widget-autocomplete-multiple-mat-autocomplete"
@@ -47,13 +45,10 @@
                        [selected]="itemsSelected.isSelected(item)"
                        [class.selected]="itemsSelected.isSelected(item)"
                        checkboxPosition="before">
-        <div>
-          <div>
-            <span> {{(labelFn ? labelFn(item) : item[propLabel] || item) }}</span>
-          </div>
-        </div>
-        <div class="orderSelection" [ngStyle]="{backgroundColor: orderBackgroundColor, color: orderColor}"
-             *ngIf="!!orderSelection && itemsSelected.isSelected(item)">{{itemsSelected.selectedValues().indexOf(item) + 1}}</div>
+        <ng-container
+          [ngTemplateOutlet]="itemTemplate ? itemTemplate : selectMultipleItemTemplate"
+          [ngTemplateOutletContext]="{item:item, order: itemsSelected.selectedValues().indexOf(item) + 1}">
+        </ng-container>
       </mat-list-option>
       <mat-option [style.display]="'none'"></mat-option>
     </mat-selection-list>
@@ -75,6 +70,18 @@
     No hay coincidencias
   </div>
 </ng-template>
+
+
+<ng-template #selectMultipleItemTemplate let-item='item' let-order='order'>
+  <div>
+    <div>
+      <span> {{(labelFn ? labelFn(item) : item[propLabel] || item) }}</span>
+    </div>
+  </div>
+  <div class="orderSelection" [ngStyle]="{backgroundColor: orderBackgroundColor, color: orderColor}"
+       *ngIf="!!orderSelection && itemsSelected.isSelected(item)">{{order}}</div>
+</ng-template>
+
 
 <!--End Periodo-->
 <!--{{itemsSelected.selectedValues()  | json}}-->

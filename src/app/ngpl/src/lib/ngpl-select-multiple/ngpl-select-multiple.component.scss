@@ -20,15 +20,14 @@
   .mat-form-field-infix {
     display: flex;
     justify-content: space-between;
-  }
-  .arrow {
-    color: rgba(0, 0, 0, 0.54);
+
+    ngpl-skeleton {
+      flex: 1 1;
+    }
   }
 
-  &.no-empty {
-    .mat-form-field-outline.mat-form-field-outline-thick {
-      opacity: 1 !important;
-    }
+  .arrow {
+    color: rgba(0, 0, 0, 0.54);
   }
 
   .customInput {
@@ -36,19 +35,6 @@
     caret-color: transparent !important;
   }
 
-  &.hide-theme-color {
-    &.mat-form-field {
-      .mat-form-field-wrapper {
-        .mat-form-field-underline {
-          display: none;
-        }
-
-        .mat-form-field-subscript-wrapper {
-          display: none;
-        }
-      }
-    }
-  }
 }
 
 .widget-autocomplete-multiple-mat-autocomplete {
@@ -157,5 +143,4 @@
 
 .no-result-content {
   display: flex;
-
 }

@@ -13,7 +13,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {ControlValueAccessor, FormBuilder, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Changes} from 'ngx-reactivetoolkit';
 import {ReplaySubject} from 'rxjs';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
@@ -117,7 +117,9 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   @Input() hideThemeColorClass = true;
 
   /**  Controla si el componenten debe mostrar un Skeleton */
-  @Input() skeleton = false;
+  @Input() showLoading = false;
+  @Input() showLoadingWidth = '100%';
+  @Input() showLoadingHeight = '15px';
 
   /**  Define si se muestra el orden de seleccion de un item */
   @Input() orderSelection = false;
@@ -189,7 +191,10 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
    */
   @Input() noResultTemplate: TemplateRef<any>;
 
-  constructor(private fb: FormBuilder) {
+  @Input() itemTemplate: TemplateRef<any>;
+
+
+  constructor( ) {
   }
 
   /**
@@ -333,7 +338,8 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   onItemsSelectionChange(event: MatAutocompleteSelectedEvent | any): void {
     const {value} = event.option;
     this._updateSelected(value);
-    this.searchInput.nativeElement.value = this.lastSearch;
+    if (!!this.searchInput)
+      this.searchInput.nativeElement.value = this.lastSearch;
   }
 
   /** Actualiza el estado de seleccion del item especificado */
@@ -410,7 +416,8 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
 
   inputSearchFocus(): void {
     setTimeout(() => {
-      this.searchInput.nativeElement.focus();
+      if (!!this.searchInput)
+        this.searchInput.nativeElement.focus();
     }, 200);
   }
 

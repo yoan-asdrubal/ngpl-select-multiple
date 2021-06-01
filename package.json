@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --host serverlocal.defontana.com --port 4200",
-    "build": "ng build --prod",
+    "start": "ng serve --port 4200 --base-href /",
+    "build": "ng build --prod --base-href /ngpl-select-multiple.github.io/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

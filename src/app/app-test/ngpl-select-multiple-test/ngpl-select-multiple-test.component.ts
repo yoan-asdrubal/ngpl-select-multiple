@@ -15,6 +15,7 @@ export class NgplSelectMultipleTestComponent implements OnInit {
   formGroup: FormGroup;
   disableControl = new FormControl();
   readOnlyControl = new FormControl();
+  loadingControl = new FormControl();
 
 
   constructor(private _formB: FormBuilder) {

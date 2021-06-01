@@ -2,3 +2,22 @@ section > * {
   display: flex;
   justify-content: space-around;
 }
+.item-template {
+  .odd {
+    background: #3f51b5;
+  }
+  .even {
+    background: #ff4081;
+  }
+  .order {
+    width: 30px;
+    height: 30px;
+    border-radius: 20%;
+    font-weight: bold;
+    background: blue;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items:  center;
+  }
+}

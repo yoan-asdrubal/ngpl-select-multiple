@@ -30,7 +30,7 @@
     "@angular/platform-browser-dynamic": "~11.0.5",
     "@angular/router": "~11.0.5",
     "@ngneat/until-destroy": "^8.0.3",
-    "ngpl-common": "^2.0.18",
+    "ngpl-common": "^2.0.20",
     "ngx-reactivetoolkit": "^8.0.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

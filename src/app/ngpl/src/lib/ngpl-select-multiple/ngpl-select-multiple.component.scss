@@ -12,15 +12,13 @@
     background: #cccccc;
     color: black;
     font-size: 12px;
-    padding: 7px;
-    width: 6px;
-    height: 6px;
+    padding: 1px 2px;
   }
 
   .mat-form-field-infix {
     display: flex;
     justify-content: space-between;
-
+    align-items: center;
     ngpl-skeleton {
       flex: 1 1;
     }

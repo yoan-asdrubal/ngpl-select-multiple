@@ -262,6 +262,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   }
 
   select(items: any[]): void {
+    console.log('select items', items);
     const values = [];
     const labels = [];
     const titleCase = new TitleCasePipe();
@@ -432,7 +433,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   }
 
   masterToggle(event): void {
-    console.log('masterToggle event', event);
+    // console.log('masterToggle event', event);
     this.itemsSelected.masterToggle(this.items);
   }
 

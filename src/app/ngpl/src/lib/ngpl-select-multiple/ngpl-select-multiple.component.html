@@ -20,6 +20,7 @@
   <mat-autocomplete #search_autocomplete="matAutocomplete"
                     class="widget-autocomplete-multiple-mat-autocomplete"
                     (opened)="inputSearchFocus()"
+                    (closed)="updateSelectedFirst()"
                     [panelWidth]="panelWidth">
     <mat-option *ngIf="searcheable===true" class="widget-autocomplete-multiple-search" disabled="disabled"
                 (click)="$event.preventDefault()"

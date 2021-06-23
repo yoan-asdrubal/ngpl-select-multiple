@@ -190,6 +190,8 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
 
   @Input() itemTemplate: TemplateRef<any>;
 
+  @Input() showSelectedFirst = true;
+
 
   constructor(private ngplFilterService: NgplFilterService) {
   }
@@ -217,6 +219,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
         tap((items: any[]) => {
           this.items = items;
           if (isNotNullOrUndefined(this.items) && this.items.length > 0) {
+            this.updateSelectedFirst();
             this.updateSelectedValues();
           }
           this.applyFilter(this.items, this.filterConfig);
@@ -309,7 +312,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
    */
   applyFilter(items, filter): void {
     const itemsFil = this.ngplFilterService.filter(items, filter);
-    this.filteredItems = this.ordenarItemsSeleccionados(itemsFil);
+    // this.filteredItems = this.ordenarItemsSeleccionados(itemsFil);
     this.filteredItems$.next(this.filteredItems);
   }
 
@@ -427,8 +430,22 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   newValue(value: any): void {
     this.writeValue(value);
   }
-  masterToggle(event): void{
+
+  masterToggle(event): void {
     console.log('masterToggle event', event);
     this.itemsSelected.masterToggle(this.items);
+  }
+
+  updateSelectedFirst(): void {
+    if (this.showSelectedFirst === true)
+      this.items = this.items.sort((a, b) => {
+        if (this.itemsSelected.isSelected(a) && this.itemsSelected.isSelected(b)) {
+          return 0;
+        }
+        if (this.itemsSelected.isSelected(a) && !this.itemsSelected.isSelected(b)) {
+          return -1;
+        }
+        return 1;
+      });
   }
 }

@@ -37,7 +37,7 @@
                  autocomplete="off">
           <ng-template [ngIf]="showIconSearch === true ">
             <mat-icon matSuffix *ngIf="searchFormCtrl.value.length === 0">search</mat-icon>
-            <mat-icon matSuffix *ngIf="searchFormCtrl.value.length !== 0" (click)="clearSearch($event)">
+            <mat-icon matSuffix *ngIf="searchFormCtrl.value.length !== 0" class="c-pointer" (click)="clearSearch($event)">
               close
             </mat-icon>
           </ng-template>

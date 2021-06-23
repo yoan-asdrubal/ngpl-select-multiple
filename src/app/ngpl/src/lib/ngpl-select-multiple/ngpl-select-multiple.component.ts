@@ -20,8 +20,7 @@ import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {TitleCasePipe} from '@angular/common';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
-import {isNotNullOrUndefined} from 'codelyzer/util/isNotNullOrUndefined';
-import {NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService, NgplSelection} from 'ngpl-common';
+import {isNotNullOrUndefined, NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService, NgplSelection} from 'ngpl-common';
 
 @UntilDestroy()
 @Component({

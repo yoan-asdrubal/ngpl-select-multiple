@@ -26,14 +26,20 @@
                 [class.sticky]="stickSearch">
       <div class="widget-filter-search-result-header">
         <div class="widget-autocomplete-multiple-search-div-1">
+          <mat-checkbox [disabled]="items?.length===0"
+                        (click)="masterToggle($event)  "
+                        (change)="masterToggle($event)  "
+                        [checked]="itemsSelected.isAllSelected(items)"
+                        [indeterminate]="itemsSelected.hasValue() && !itemsSelected.isAllSelected(items)">
+          </mat-checkbox>
+          <input #searchInput matInput placeholder="Buscar" [formControl]="searchFormCtrl"
+                 autocomplete="off">
           <ng-template [ngIf]="showIconSearch === true ">
             <mat-icon matSuffix *ngIf="searchFormCtrl.value.length === 0">search</mat-icon>
             <mat-icon matSuffix *ngIf="searchFormCtrl.value.length !== 0" (click)="clearSearch($event)">
               close
             </mat-icon>
           </ng-template>
-          <input #searchInput matInput placeholder="Buscar" [formControl]="searchFormCtrl"
-                 autocomplete="off">
         </div>
       </div>
     </mat-option>
@@ -79,7 +85,7 @@
     </div>
   </div>
   <div class="orderSelection" [ngStyle]="{backgroundColor: orderBackgroundColor, color: orderColor}"
-       *ngIf="!!orderSelection && itemsSelected.isSelected(item)">{{order}}</div>
+       *ngIf="!!showSelectionOrder && itemsSelected.isSelected(item)">{{order}}</div>
 </ng-template>
 
 

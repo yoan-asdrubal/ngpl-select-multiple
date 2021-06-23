@@ -21,7 +21,7 @@ import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {TitleCasePipe} from '@angular/common';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {isNotNullOrUndefined} from 'codelyzer/util/isNotNullOrUndefined';
-import {NGPL_FILTER_BASE, NgplCustomSelectionModel, NgplFilterBase, NgplFilterPipe} from 'ngpl-common';
+import {NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService, NgplSelection} from 'ngpl-common';
 
 @UntilDestroy()
 @Component({
@@ -122,8 +122,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   @Input() showLoadingHeight = '15px';
 
   /**  Define si se muestra el orden de seleccion de un item */
-  @Input() orderSelection = false;
-
+  @Input() showSelectionOrder = false;
 
   @Input() orderColor;
 
@@ -161,7 +160,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   lastSearch = '';
 
   /** Controla internamente la seleccion de elementos */
-  itemsSelected: NgplCustomSelectionModel<any> = new NgplCustomSelectionModel<any>();
+  itemsSelected: NgplSelection<any> = new NgplSelection<any>();
 
   /** Controla internamente los elementos filtrados para mostrar en el panel del autocomplete */
   filteredItems$ = new ReplaySubject<any[]>(1);
@@ -175,8 +174,6 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   /**
    * Rererencia al panel del autocomplete
    */
-
-  filterPipe = new NgplFilterPipe();
 
   filterConfig = {};
   _selectedValue: any[];
@@ -194,7 +191,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   @Input() itemTemplate: TemplateRef<any>;
 
 
-  constructor( ) {
+  constructor(private ngplFilterService: NgplFilterService) {
   }
 
   /**
@@ -311,7 +308,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
    * @param filter
    */
   applyFilter(items, filter): void {
-    const itemsFil = this.filterPipe.transform(items, filter);
+    const itemsFil = this.ngplFilterService.filter(items, filter);
     this.filteredItems = this.ordenarItemsSeleccionados(itemsFil);
     this.filteredItems$.next(this.filteredItems);
   }
@@ -429,5 +426,9 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
 
   newValue(value: any): void {
     this.writeValue(value);
+  }
+  masterToggle(event): void{
+    console.log('masterToggle event', event);
+    this.itemsSelected.masterToggle(this.items);
   }
 }

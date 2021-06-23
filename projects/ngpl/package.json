@@ -1,11 +1,9 @@
 {
   "name": "ngpl-select-multiple",
-  "version": "1.0.3",
-  "peerDependencies": {
-    "ngpl-common": "1.0.17"
-  },
-
+  "version": "1.0.9",
+  "peerDependencies": {},
   "dependencies": {
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.0",
+    "ngpl-common": "^2.0.15"
   }
 }

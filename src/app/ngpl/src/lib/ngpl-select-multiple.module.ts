@@ -10,6 +10,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {OverlayModule} from '@angular/cdk/overlay';
 import {NgplCommonDirectivesModule, NgplCommonModule} from 'ngpl-common';
 import {NgplSelectMultipleComponent} from './ngpl-select-multiple/ngpl-select-multiple.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 const components = [
   NgplSelectMultipleComponent
@@ -25,6 +26,7 @@ const components = [
     MatAutocompleteModule,
     MatListModule,
     MatSelectModule,
+    MatCheckboxModule,
     ReactiveFormsModule,
     MatIconModule,
     OverlayModule,

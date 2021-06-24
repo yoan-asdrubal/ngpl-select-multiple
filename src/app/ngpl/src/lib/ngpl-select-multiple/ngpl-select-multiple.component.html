@@ -30,8 +30,8 @@
           <mat-checkbox [disabled]="items?.length===0"
                         (click)="masterToggle($event)  "
                         (change)="masterToggle($event)  "
-                        [checked]="itemsSelected.isAllSelected(items)"
-                        [indeterminate]="itemsSelected.hasValue() && !itemsSelected.isAllSelected(items)">
+                        [checked]="itemsSelected.isAllSelected(filteredItems)"
+                        [indeterminate]="itemsSelected.hasValue() && !itemsSelected.isAllSelected(filteredItems)">
           </mat-checkbox>
           <input #searchInput matInput placeholder="Buscar" [formControl]="searchFormCtrl"
                  autocomplete="off">

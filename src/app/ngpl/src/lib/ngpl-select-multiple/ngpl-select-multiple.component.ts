@@ -228,9 +228,8 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
     this.searchFormCtrl.valueChanges
       .pipe(
         untilDestroyed(this)
-
         , distinctUntilChanged()
-        , debounceTime(300)
+        , debounceTime(250)
         , tap((value) => {
           this.filterConfig = {
             filter: {
@@ -311,7 +310,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
    * @param filter
    */
   applyFilter(items, filter): void {
-    const itemsFil = this.ngplFilterService.filter(items, filter);
+    this.filteredItems = this.ngplFilterService.filter(items, filter);
     // this.filteredItems = this.ordenarItemsSeleccionados(itemsFil);
     this.filteredItems$.next(this.filteredItems);
   }
@@ -402,7 +401,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
    * @param event
    */
   clearSearch(event): void {
-    this.inputFormControl.setValue('');
+    // this.inputFormControl.setValue('');
     this.searchFormCtrl.setValue('');
     event.preventDefault();
     event.stopPropagation();
@@ -433,7 +432,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
 
   masterToggle(event): void {
     // console.log('masterToggle event', event);
-    this.itemsSelected.masterToggle(this.items);
+    this.itemsSelected.masterToggle(this.filteredItems);
   }
 
   updateSelectedFirst(): void {

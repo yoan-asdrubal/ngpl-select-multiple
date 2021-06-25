@@ -1,4 +1,4 @@
-<mat-form-field class="widget-autocomplete-multiple-mat-form-field {{customClass}}"
+<mat-form-field class="ngpl-select-multiple-mat-form-field {{customClass}}"
                 [floatLabel]="showLoading ? 'always' : floatLabel"
                 color="accent"
                 [appearance]="appearance">
@@ -10,6 +10,7 @@
     <input class="customInput" matInput type="text"
            [ngplDisableControl]="disabledControl"
            [readOnly]="readOnlyControl"
+           [readOnly]="readOnlyControl"
            (keydown)="$event.preventDefault(); $event.stopPropagation()"
            [formControl]="inputFormControl"
            [matAutocomplete]="search_autocomplete"
@@ -18,15 +19,15 @@
   <mat-icon class="arrow" matSuffix *ngIf="showLoading!==true">arrow_drop_down</mat-icon>
 
   <mat-autocomplete #search_autocomplete="matAutocomplete"
-                    class="widget-autocomplete-multiple-mat-autocomplete"
+                    class="ngpl-select-multiple-mat-autocomplete"
                     (opened)="inputSearchFocus()"
                     (closed)="updateSelectedFirst()"
                     [panelWidth]="panelWidth">
-    <mat-option *ngIf="searcheable===true" class="widget-autocomplete-multiple-search" disabled="disabled"
+    <mat-option *ngIf="searcheable===true" class="ngpl-select-multiple-search" disabled="disabled"
                 (click)="$event.preventDefault()"
                 [class.sticky]="stickSearch">
       <div class="widget-filter-search-result-header">
-        <div class="widget-autocomplete-multiple-search-div-1">
+        <div class="ngpl-select-multiple-search-div-1">
           <mat-checkbox [disabled]="items?.length===0"
                         (click)="masterToggle($event)  "
                         (change)="masterToggle($event)  "
@@ -59,7 +60,7 @@
       </mat-list-option>
       <mat-option [style.display]="'none'"></mat-option>
     </mat-selection-list>
-    <mat-option *ngIf="filteredItems.length === 0 " class="widget-autocomplete-multiple-search"
+    <mat-option *ngIf="filteredItems.length === 0 " class="ngpl-select-multiple-search"
                 disabled="disabled" (click)="$event.preventDefault()"
                 [class.sticky]="stickSearch">
       <ng-container

@@ -1,5 +1,5 @@
 
-.widget-autocomplete-multiple-mat-form-field {
+.ngpl-select-multiple-mat-form-field {
   width: 100%;
   cursor: pointer !important;
   display: inline-block;
@@ -19,6 +19,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     ngpl-skeleton {
       flex: 1 1;
     }
@@ -35,8 +36,8 @@
 
 }
 
-.widget-autocomplete-multiple-mat-autocomplete {
-  .widget-autocomplete-multiple-search {
+.ngpl-select-multiple-mat-autocomplete {
+  .ngpl-select-multiple-search {
     box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
     background-color: white;
     color: rgba(0, 0, 0, 0.87);
@@ -50,7 +51,7 @@
     }
   }
 
-  .widget-autocomplete-multiple-search-div-1 {
+  .ngpl-select-multiple-search-div-1 {
     width: 100%;
     display: flex;
     justify-content: flex-start;
@@ -125,8 +126,7 @@
     }
   }
 
-
-  .widget-autocomplete-multiple-no-result-data {
+  .ngpl-select-multiple-no-result-data {
     height: auto !important;
     min-height: 48px;
     display: flex;
@@ -135,10 +135,12 @@
     color: rgba(0, 0, 0, 0.87);
     cursor: default;
   }
-
-
 }
 
 .no-result-content {
   display: flex;
+}
+
+.c-pointer {
+  cursor: pointer;
 }

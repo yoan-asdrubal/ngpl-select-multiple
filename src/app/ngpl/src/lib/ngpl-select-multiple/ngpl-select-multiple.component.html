@@ -4,9 +4,9 @@
                 color="accent"
                 [appearance]="appearance">
   <mat-label> {{ placeHolder}}  </mat-label>
-  <label [ngStyle]="{backgroundColor: orderBackgroundColor, color: orderColor}"
-         class="total-selected mr-2 "
-         *ngIf="_selectedValue?.length > 0 && showTotalSelected === true && !showLoading">{{_selectedValue?.length}}</label>
+  <label
+    class="total-selected  "
+    *ngIf="_selectedValue?.length > 0 && !showLoading">(+{{_selectedValue?.length}})</label>
   <ngpl-skeleton [width]="showLoadingWidth" [height]="showLoadingHeight" [isLoading]="showLoading">
     <input class="customInput" matInput type="text"
            [ngplDisableControl]="disabledControl"
@@ -37,8 +37,9 @@
         <input #searchInput matInput placeholder="Buscar" [formControl]="searchFormCtrl"
                autocomplete="off" (keydown)="$event.stopPropagation()">
         <ng-template [ngIf]="showIconSearch === true ">
-          <mat-icon matSuffix *ngIf="searchFormCtrl.value.length === 0">search</mat-icon>
-          <mat-icon matSuffix *ngIf="searchFormCtrl.value.length !== 0" class="c-pointer" (click)="clearSearch($event)">
+          <mat-icon matSuffix *ngIf="searchFormCtrl.value.length === 0" class="mr-2">search</mat-icon>
+          <mat-icon matSuffix *ngIf="searchFormCtrl.value.length !== 0" class="c-pointer mr-2"
+                    (click)="clearSearch($event)">
             close
           </mat-icon>
         </ng-template>

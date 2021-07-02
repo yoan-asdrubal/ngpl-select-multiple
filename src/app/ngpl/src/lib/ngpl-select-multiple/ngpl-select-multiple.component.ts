@@ -21,7 +21,6 @@ import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl} from '@
 import {Changes} from 'ngx-reactivetoolkit';
 import {ReplaySubject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
-import {TitleCasePipe} from '@angular/common';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {isNotNullOrUndefined, NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService, NgplSelection} from 'ngpl-common';
 import {CdkOverlayOrigin, Overlay, OverlayPositionBuilder, OverlayRef} from '@angular/cdk/overlay';
@@ -338,9 +337,8 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   select(items: any[]): void {
     console.log('select items', items);
     const values = [];
-    const labels = [];
-    const titleCase = new TitleCasePipe();
-    items.forEach(item => {
+    let labels = '';
+    items.forEach((item, index) => {
       let label = item;
       let value = item;
       if (!item) {
@@ -348,17 +346,17 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
         value = '';
       } else {
         if (label !== '') {
-          label = this.labelFn ? this.labelFn(item) : item[this.propLabel] || item;
+          labels += (index === 0 ? '' : ', ') + (!!this.labelFn ? this.labelFn(item) : (item[this.propLabel] || item));
         }
         if (value !== '') {
           value = this.propValue ? item[this.propValue] : item;
         }
       }
-      labels.push(label);
+
       values.push(value);
     });
 
-    this.inputFormControl.setValue((labels[0] || '') + (labels.length > 1 ? (`  (+${labels.length - 1})`) : ''));
+    this.inputFormControl.setValue(labels);
     this._selectedValue = values;
 
     this.emit();

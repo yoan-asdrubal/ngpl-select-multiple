@@ -34,7 +34,7 @@ export class NgplSelectMultipleTestComponent implements OnInit {
       select9: []
     });
 
-    this.items = Array(500).fill(1).map((i, index) => {
+    this.items = Array(5000).fill(1).map((i, index) => {
 
       return {
         id: index,

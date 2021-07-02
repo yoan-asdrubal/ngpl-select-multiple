@@ -1,5 +1,6 @@
-<mat-form-field class="ngpl-select-multiple-mat-form-field {{customClass}}"
+<mat-form-field class="ngpl-select-multiple  {{customClass}}"
                 [floatLabel]="showLoading ? 'always' : floatLabel"
+                (click)="openPanelWithBackdrop($event)"
                 color="accent"
                 [appearance]="appearance">
   <mat-label> {{ placeHolder}}  </mat-label>
@@ -11,85 +12,93 @@
            [ngplDisableControl]="disabledControl"
            [readOnly]="readOnlyControl"
            [readOnly]="readOnlyControl"
+           autocomplete="off"
            (keydown)="$event.preventDefault(); $event.stopPropagation()"
-           [formControl]="inputFormControl"
-           [matAutocomplete]="search_autocomplete"
-           [matAutocompleteConnectedTo]="null">
+           [formControl]="inputFormControl">
   </ngpl-skeleton>
   <mat-icon class="arrow" matSuffix *ngIf="showLoading!==true">arrow_drop_down</mat-icon>
 
-  <mat-autocomplete #search_autocomplete="matAutocomplete"
-                    class="ngpl-select-multiple-mat-autocomplete"
-                    (opened)="inputSearchFocus()"
-                    (closed)="updateSelectedFirst()"
-                    [panelWidth]="panelWidth">
-    <mat-option *ngIf="searcheable===true" class="ngpl-select-multiple-search" disabled="disabled"
-                (click)="$event.preventDefault()"
-                [class.sticky]="stickSearch">
-      <div class="widget-filter-search-result-header">
-        <div class="ngpl-select-multiple-search-div-1">
-          <mat-checkbox [disabled]="items?.length===0"
-                        (click)="masterToggle($event)  "
-                        (change)="masterToggle($event)  "
-                        [checked]="itemsSelected.isAllSelected(filteredItems)"
-                        [indeterminate]="itemsSelected.hasValue() && !itemsSelected.isAllSelected(filteredItems)">
-          </mat-checkbox>
-          <input #searchInput matInput placeholder="Buscar" [formControl]="searchFormCtrl"
-                 autocomplete="off">
-          <ng-template [ngIf]="showIconSearch === true ">
-            <mat-icon matSuffix *ngIf="searchFormCtrl.value.length === 0">search</mat-icon>
-            <mat-icon matSuffix *ngIf="searchFormCtrl.value.length !== 0" class="c-pointer" (click)="clearSearch($event)">
-              close
-            </mat-icon>
-          </ng-template>
-        </div>
-      </div>
-    </mat-option>
-
-    <mat-divider></mat-divider>
-    <mat-selection-list (selectionChange)="onItemsSelectionChange($event)">
-      <mat-list-option [id]="item?.id"
-                       *ngFor="let item of filteredItems$ | async" [value]="item"
-                       [selected]="itemsSelected.isSelected(item)"
-                       [class.selected]="itemsSelected.isSelected(item)"
-                       checkboxPosition="before">
-        <ng-container
-          [ngTemplateOutlet]="itemTemplate ? itemTemplate : selectMultipleItemTemplate"
-          [ngTemplateOutletContext]="{item:item, order: itemsSelected.selectedValues().indexOf(item) + 1}">
-        </ng-container>
-      </mat-list-option>
-      <mat-option [style.display]="'none'"></mat-option>
-    </mat-selection-list>
-    <mat-option *ngIf="filteredItems.length === 0 " class="ngpl-select-multiple-search"
-                disabled="disabled" (click)="$event.preventDefault()"
-                [class.sticky]="stickSearch">
-      <ng-container
-        [ngTemplateOutlet]="noResultTemplate ? noResultTemplate : widgetSelectSearchableNoResults"
-        [ngTemplateOutletContext]="{search:searchFormCtrl?.value}">
-      </ng-container>
-    </mat-option>
-    <!--				<app-loading *ngIf="searching" height="215px"></app-loading>-->
-  </mat-autocomplete>
-
-
 </mat-form-field>
-<ng-template #widgetSelectSearchableNoResults let-search='search'>
-  <div class="no-result-content">
-    No hay coincidencias
-  </div>
-</ng-template>
+
+<div cdkOverlayOrigin></div>
+
+<ng-template #templatePortalContent>
+  <div class="mat-elevation-z8 ngpl-select-multiple-content" [ngplWidth]="panelWidth">
+
+    <div *ngIf="searcheable===true" class="ngpl-select-multiple-search" disabled="disabled"
+         (click)="$event.preventDefault()" [class.sticky]="stickSearch">
+      <div class="ngpl-select-multiple-search-content">
+        <ng-template [ngIf]="showIconSearch === true ">
+          <mat-icon matSuffix *ngIf="searchFormCtrl.value.length === 0">search</mat-icon>
+          <mat-icon matSuffix *ngIf="searchFormCtrl.value.length !== 0" class="close"
+                    (click)="clearSearch($event)">
+            close
+          </mat-icon>
+        </ng-template>
+        <input class="input-filter" #searchInput matInput placeholder="Buscar" [formControl]="searchFormCtrl"
+               autocomplete="off" (keydown)="$event.stopPropagation()">
+      </div>
+    </div>
+
+    <cdk-virtual-scroll-viewport *ngIf="(filteredItems$ | async)?.length > 0"
+                                 itemSize="48"
+                                 class="ngpl-select-multiple-search-viewport">
+      <div class="ngpl-select-multiple-option"
+           *cdkVirtualFor="let item of filteredItems$ | async; "
+           [class.selected]="!!_selectedValue && (propValue ? item[propValue]?.toString()===_selectedValue?.toString() : item ===_selectedValue)">
+
+        <div>
+          <div>
+            <mat-checkbox [checked]="itemsSelected.isSelected(item)"
+                          (change)="toogleSelected(item)"
+                          color="primary">
+              <ng-container
+                [ngTemplateOutlet]="!!itemTemplateRef ? itemTemplateRef.template : selectMultipleItemTemplate"
+                [ngTemplateOutletContext]="{
+          $implicit:item,
+          item:item,
+          order: itemsSelected.selectedValues().indexOf(item) + 1}">
+              </ng-container>
+            </mat-checkbox>
+          </div>
+        </div>
 
 
-<ng-template #selectMultipleItemTemplate let-item='item' let-order='order'>
-  <div>
-    <div>
-      <span> {{(labelFn ? labelFn(item) : item[propLabel] || item) }}</span>
+      </div>
+    </cdk-virtual-scroll-viewport>
+
+    <div class="ngpl-select-multiple-option ngpl-select-multiple-no-result-data"
+         *ngIf="(filteredItems$ | async)?.length === 0">
+      <ng-template [ngIf]="items?.length === 0">
+        <ng-container
+          [ngTemplateOutlet]="!!noItemsTemplateRef ? noItemsTemplateRef.template : ngplSelectMultipleNoResults">
+
+        </ng-container>
+      </ng-template>
+      <ng-template [ngIf]="items?.length > 0">
+        <ng-container
+          [ngTemplateOutlet]="!!itemNoFoundTemplateRef ? itemNoFoundTemplateRef.template : ngplSelectMultipleNoResults"
+          [ngTemplateOutletContext]="{search:searchFormCtrl?.value}">
+
+        </ng-container>
+      </ng-template>
+
     </div>
   </div>
-  <div class="orderSelection" [ngStyle]="{backgroundColor: orderBackgroundColor, color: orderColor}"
-       *ngIf="!!showSelectionOrder && itemsSelected.isSelected(item)">{{order}}</div>
+</ng-template>
+
+<ng-template #ngplSelectMultipleNoResults>
+  <ng-template [ngIf]="items?.length === 0">
+    {{noItemsText}}
+  </ng-template>
+  <ng-template [ngIf]="items?.length > 0">
+    {{noResultText}}
+  </ng-template>
 </ng-template>
 
 
-<!--End Periodo-->
-<!--{{itemsSelected.selectedValues()  | json}}-->
+<ng-template #selectMultipleItemTemplate let-item='item'>
+  {{(labelFn ? labelFn(item) : item[propLabel] || item) }}
+</ng-template>
+
+

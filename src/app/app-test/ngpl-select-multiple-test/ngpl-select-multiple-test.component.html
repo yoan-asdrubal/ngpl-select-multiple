@@ -53,7 +53,6 @@
                             [readOnlyControl]="readOnlyControl.value"
                             formControlName="select3"
                             [filterBy]="'descripcion'"
-                            [noResultTemplate]="noResult"
                             [items]="items">
       </ngpl-select-multiple>
 
@@ -122,31 +121,64 @@
         appearance="standard"
         panelWidth="300px"
         ngplWidth="250px"
-        [itemTemplate]="selectMultipleItemTemplate"
         placeHolder="Custom Item Template"
         [items]="items">
 
       </ngpl-select-multiple>
 
     </div>
-    <ng-template #noResult let-search='search'>
-      <div>
-        <h1>No Items Found to {{search}}</h1>
-      </div>
-    </ng-template>
 
-    <ng-template #selectMultipleItemTemplate let-item='item' let-order='order'>
-      <div fxLayout fxLayoutAlign="space-between center" class="item-template">
-        <mat-icon class="mr-2 "
-                  [class.odd]="item.id % 2 === 0"
-                  [class.even]="item.id % 2 !== 0">
-          {{item.id % 2 === 0 ? "3d_rotation" : 'more_vert'}}</mat-icon>
-        <p>{{item.id}} {{item.descripcion}}</p>
-        <p *ngIf="order > 0" class="order">
-          {{order}}
-        </p>
-      </div>
-    </ng-template>
+    <div fxLayout fxLayoutAlign="space-around" class="mt-3">
+      <ngpl-select-multiple
+        [ngplDisableControl]="disableControl.value"
+        [readOnlyControl]="readOnlyControl.value"
+        [showLoading]="loadingControl.value"
+        showSelectedFirst="false"
+        showTotalSelected="false"
+        formControlName="select6"
+        panelWidth="270px"
+        [showSelectionOrder]="true"
+        ngplWidth="250px"
+        placeHolder="Custom Templates"
+        [items]="items">
+
+        <ngplItemTemplate>
+          <ng-template let-item="item" let-order="order" let-index="index">
+            [{{ index }}] [{{ order }}] Hello: {{ item.descripcion }}
+          </ng-template>
+        </ngplItemTemplate>
+
+        <ngplItemsNoFoundTemplate>
+          <ng-template let-search='search'>
+            Nada de nada para <i><b> {{search}} </b></i>
+          </ng-template>
+        </ngplItemsNoFoundTemplate>
+
+      </ngpl-select-multiple>
+
+
+      <ngpl-select-multiple
+        [ngplDisableControl]="disableControl.value"
+        [readOnlyControl]="readOnlyControl.value"
+        [showLoading]="loadingControl.value"
+        showSelectedFirst="false"
+        showTotalSelected="false"
+        showLoadingWidth="200px"
+        formControlName="select8"
+        appearance="standard"
+        panelWidth="300px"
+        ngplWidth="250px"
+        placeHolder="NO Item Template"
+        [items]="[]">
+        <ngplNoItemsTemplate>
+          <ng-template>
+            No hay item por ningun lado
+          </ng-template>
+        </ngplNoItemsTemplate>
+      </ngpl-select-multiple>
+    </div>
+
+
   </form>
 
   <div fxLayout="" fxLayoutAlign="space-around" ngplWidth="100%">

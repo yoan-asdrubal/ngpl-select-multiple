@@ -1,9 +1,12 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ContentChild,
   ElementRef,
   EventEmitter,
   forwardRef,
+  Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -11,16 +14,21 @@ import {
   Output,
   TemplateRef,
   ViewChild,
+  ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl} from '@angular/forms';
 import {Changes} from 'ngx-reactivetoolkit';
 import {ReplaySubject} from 'rxjs';
-import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {TitleCasePipe} from '@angular/common';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 import {isNotNullOrUndefined, NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService, NgplSelection} from 'ngpl-common';
+import {CdkOverlayOrigin, Overlay, OverlayPositionBuilder, OverlayRef} from '@angular/cdk/overlay';
+import {NgplItemTemplateDirective} from '../ngpl-item-template.directive';
+import {ItemsNotFoundTemplateDirective} from '../items-not-found-template.directive';
+import {NoItemsTemplateDirective} from '../no-items-template.directive';
+import {TemplatePortal} from '@angular/cdk/portal';
 
 @UntilDestroy()
 @Component({
@@ -52,7 +60,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   /**
    * Ancho del panel del Autocomplete
    */
-  @Input() panelWidth = '';
+  @Input() panelWidth = '250px';
 
   /** Propiedades sobre las que se desea aplicar el filtro en los {@link #items} */
   @Input() filterBy: string | string[] = ['descripcion'];
@@ -182,17 +190,42 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
 
   @Input() readOnlyControl = false;
 
+  @Input() showSelectedFirst = true;
+
   /**
    * Template para mostrar cuando no existan resultados en la búsqueda, es opcional.
    */
-  @Input() noResultTemplate: TemplateRef<any>;
 
-  @Input() itemTemplate: TemplateRef<any>;
+  @Input() noItemsText = 'No hay elementos.';
 
-  @Input() showSelectedFirst = true;
+  /**
+   * Template para mostrar cuando no existan resultados en la búsqueda, es opcional.
+   */
+  @Input() noResultText = 'No hay Coincidencias.';
 
 
-  constructor(private ngplFilterService: NgplFilterService) {
+  private overlayRef: OverlayRef;
+  ngControl: NgControl;
+
+  @ViewChild(CdkOverlayOrigin, {static: true}) origin: CdkOverlayOrigin;
+
+  @ViewChild('templatePortalContent', {static: true}) templatePortalContent: TemplateRef<any>;
+
+  @ContentChild(NgplItemTemplateDirective, {static: false})
+  itemTemplateRef: NgplItemTemplateDirective;
+
+  @ContentChild(ItemsNotFoundTemplateDirective, {static: false})
+  itemNoFoundTemplateRef: ItemsNotFoundTemplateDirective;
+
+  @ContentChild(NoItemsTemplateDirective, {static: false})
+  noItemsTemplateRef: NoItemsTemplateDirective;
+
+  constructor(private overlay: Overlay,
+              private injector: Injector,
+              private changeDetectorRef: ChangeDetectorRef,
+              private overlayPositionBuilder: OverlayPositionBuilder,
+              private _viewContainerRef: ViewContainerRef,
+              private ngplFilterService: NgplFilterService) {
   }
 
   /**
@@ -208,6 +241,8 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
    * Se subscribe al cambio en los elementos seleccionados para emitir estos valores.
    */
   ngOnInit(): void {
+    this.ngControl = this.injector.get(NgControl, null, 2);
+
     this.itemsSelected.setKey(this.trackBy || 'id');
 
     this.filteredItems = this.items || [];
@@ -233,7 +268,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
         , tap((value) => {
           this.filterConfig = {
             filter: {
-              value: value,
+              value,
               keys: typeof this.filterBy === 'string' ? this.filterBy.split(',') : this.filterBy
             }
           };
@@ -257,6 +292,47 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
     //         tap(val => this.itemsSelected.updateSelectedIfNotFound(val))
     //     )
     //     .subscribe();
+
+    const positionStrategy = this.overlayPositionBuilder
+      .flexibleConnectedTo(this.origin.elementRef)
+      .withPositions([{
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'top',
+        offsetY: -22
+      }
+      ]);
+
+    this.overlayRef = this.overlay.create({
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      positionStrategy
+    });
+    this.overlayRef.backdropClick()
+      .pipe(
+        untilDestroyed(this)
+      )
+      .subscribe(() => {
+        this.overlayRef.detach();
+      });
+
+  }
+
+  openPanelWithBackdrop(event): void {
+    console.log('event', event);
+    event.stopPropagation();
+    event.preventDefault();
+    if (this.disabledControl || this.readOnlyControl || !!this.showLoading) {
+      return;
+    }
+    if (this.overlayRef.hasAttached())
+      this.overlayRef.detach();
+
+    this.overlayRef.attach(new TemplatePortal(
+      this.templatePortalContent,
+      this._viewContainerRef));
+
   }
 
   select(items: any[]): void {
@@ -331,19 +407,14 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
     return itemsFil;
   }
 
-  /**
-   * Reacciona al cambio de seleccion de la lista que se muestra en el autocomplete
-   */
-  onItemsSelectionChange(event: MatAutocompleteSelectedEvent | any): void {
-    const {value} = event.option;
-    this._updateSelected(value);
-    if (!!this.searchInput)
-      this.searchInput.nativeElement.value = this.lastSearch;
-  }
 
-  /** Actualiza el estado de seleccion del item especificado */
-  private _updateSelected(item): void {
+  toogleSelected(item): void {
+    // this.overlayRef.detach();
     this.itemsSelected.toggle(item);
+    if (!!this.searchInput) {
+      this.searchInput.nativeElement.value = this.lastSearch;
+    }
+    this.changeDetectorRef.markForCheck();
   }
 
   onChange: any = () => {
@@ -415,8 +486,9 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
 
   inputSearchFocus(): void {
     setTimeout(() => {
-      if (!!this.searchInput)
+      if (!!this.searchInput) {
         this.searchInput.nativeElement.focus();
+      }
     }, 200);
   }
 
@@ -436,7 +508,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   }
 
   updateSelectedFirst(): void {
-    if (this.showSelectedFirst === true)
+    if (this.showSelectedFirst === true) {
       this.items = this.items.sort((a, b) => {
         if (this.itemsSelected.isSelected(a) && this.itemsSelected.isSelected(b)) {
           return 0;
@@ -446,5 +518,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
         }
         return 1;
       });
+    }
   }
+
 }

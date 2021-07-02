@@ -28,15 +28,21 @@
     <div *ngIf="searcheable===true" class="ngpl-select-multiple-search" disabled="disabled"
          (click)="$event.preventDefault()" [class.sticky]="stickSearch">
       <div class="ngpl-select-multiple-search-content">
+        <mat-checkbox [disabled]="items?.length===0"
+                      (click)="masterToggle($event)  "
+                      (change)="masterToggle($event)  "
+                      [checked]="itemsSelected.isAllSelected(filteredItems)"
+                      [indeterminate]="itemsSelected.hasValue() && !itemsSelected.isAllSelected(filteredItems)">
+        </mat-checkbox>
+        <input #searchInput matInput placeholder="Buscar" [formControl]="searchFormCtrl"
+               autocomplete="off" (keydown)="$event.stopPropagation()">
         <ng-template [ngIf]="showIconSearch === true ">
           <mat-icon matSuffix *ngIf="searchFormCtrl.value.length === 0">search</mat-icon>
-          <mat-icon matSuffix *ngIf="searchFormCtrl.value.length !== 0" class="close"
-                    (click)="clearSearch($event)">
+          <mat-icon matSuffix *ngIf="searchFormCtrl.value.length !== 0" class="c-pointer" (click)="clearSearch($event)">
             close
           </mat-icon>
         </ng-template>
-        <input class="input-filter" #searchInput matInput placeholder="Buscar" [formControl]="searchFormCtrl"
-               autocomplete="off" (keydown)="$event.stopPropagation()">
+
       </div>
     </div>
 

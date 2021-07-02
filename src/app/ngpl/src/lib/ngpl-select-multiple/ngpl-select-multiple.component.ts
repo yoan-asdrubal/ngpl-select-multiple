@@ -358,7 +358,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
       values.push(value);
     });
 
-    this.inputFormControl.setValue(titleCase.transform(labels.join(', ')));
+    this.inputFormControl.setValue((labels[0] || '') + (labels.length > 1 ? (`  (+${labels.length - 1})`) : ''));
     this._selectedValue = values;
 
     this.emit();

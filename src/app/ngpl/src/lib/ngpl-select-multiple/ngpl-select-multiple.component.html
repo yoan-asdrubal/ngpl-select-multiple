@@ -6,7 +6,7 @@
   <mat-label> {{ placeHolder}}  </mat-label>
   <label
     class="total-selected  "
-    *ngIf="_selectedValue?.length > 0 && !showLoading">(+{{_selectedValue?.length}})</label>
+    *ngIf="_selectedValue?.length > 1 && !showLoading">(+{{_selectedValue?.length}})</label>
   <ngpl-skeleton [width]="showLoadingWidth" [height]="showLoadingHeight" [isLoading]="showLoading">
     <input class="customInput" matInput type="text"
            [ngplDisableControl]="disabledControl"

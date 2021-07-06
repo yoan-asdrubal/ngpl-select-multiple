@@ -12,17 +12,18 @@ import {NgplCommonDirectivesModule, NgplCommonModule} from 'ngpl-common';
 import {NgplSelectMultipleComponent} from './ngpl-select-multiple/ngpl-select-multiple.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {NgplItemTemplateDirective} from './ngpl-item-template.directive';
-import {NoItemsTemplateDirective} from './no-items-template.directive';
-import {ItemsNotFoundTemplateDirective} from './items-not-found-template.directive';
+import {NgplNoItemsTemplateDirective} from './ngpl-no-items-template.directive';
+import {NgplItemsNotFoundTemplateDirective} from './ngpl-items-not-found-template.directive';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {NgplFilterModule} from 'ngpl-filter';
 
 const components = [
   NgplSelectMultipleComponent
 ];
 
 @NgModule({
-  declarations: [components, NgplItemTemplateDirective, NoItemsTemplateDirective, ItemsNotFoundTemplateDirective],
-  exports: [components, NgplItemTemplateDirective, NoItemsTemplateDirective, ItemsNotFoundTemplateDirective],
+  declarations: [components, NgplItemTemplateDirective, NgplNoItemsTemplateDirective, NgplItemsNotFoundTemplateDirective],
+  exports: [components, NgplItemTemplateDirective, NgplNoItemsTemplateDirective, NgplItemsNotFoundTemplateDirective],
   imports: [
     CommonModule,
     MatFormFieldModule,
@@ -33,6 +34,7 @@ const components = [
     OverlayModule,
     ScrollingModule,
     NgplCommonModule,
+    NgplFilterModule,
     NgplCommonDirectivesModule
   ]
 })

@@ -1,11 +1,13 @@
 import {ContentChild, Directive, TemplateRef} from '@angular/core';
 
 @Directive({
-  selector: 'ngplNoItemsTemplate'
+  selector: 'ngplItemsNoFoundTemplate'
 })
-export class NoItemsTemplateDirective {
+export class NgplItemsNotFoundTemplateDirective {
   @ContentChild(TemplateRef)
   template: TemplateRef<any>;
-  constructor() { }
+
+  constructor() {
+  }
 
 }

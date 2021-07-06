@@ -6,7 +6,7 @@
   <mat-label> {{ placeHolder}}  </mat-label>
   <label
     class="total-selected  "
-    *ngIf="_selectedValue?.length > 0 && !showLoading">(+{{_selectedValue?.length}})</label>
+    *ngIf="_selectedValue?.length > 1 && !showLoading">(+{{_selectedValue?.length}})</label>
   <ngpl-skeleton [width]="showLoadingWidth" [height]="showLoadingHeight" [isLoading]="showLoading">
     <input class="customInput" matInput type="text"
            [ngplDisableControl]="disabledControl"
@@ -47,8 +47,9 @@
       </div>
     </div>
 
-    <cdk-virtual-scroll-viewport *ngIf="(filteredItems$ | async)?.length > 0"
+    <cdk-virtual-scroll-viewport *ngIf="filteredItems?.length > 0"
                                  itemSize="48"
+                                 [ngStyle]="{minHeight: minHigth }"
                                  class="ngpl-select-multiple-search-viewport">
       <div class="ngpl-select-multiple-option"
            *cdkVirtualFor="let item of filteredItems$ | async; "

@@ -22,12 +22,13 @@ import {Changes} from 'ngx-reactivetoolkit';
 import {ReplaySubject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, tap} from 'rxjs/operators';
 import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
-import {isNotNullOrUndefined, NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService, NgplSelection} from 'ngpl-common';
+import {isNotNullOrUndefined, NgplSelection} from 'ngpl-common';
 import {CdkOverlayOrigin, Overlay, OverlayPositionBuilder, OverlayRef} from '@angular/cdk/overlay';
 import {NgplItemTemplateDirective} from '../ngpl-item-template.directive';
-import {ItemsNotFoundTemplateDirective} from '../items-not-found-template.directive';
-import {NoItemsTemplateDirective} from '../no-items-template.directive';
+import {NgplItemsNotFoundTemplateDirective} from '../ngpl-items-not-found-template.directive';
+import {NgplNoItemsTemplateDirective} from '../ngpl-no-items-template.directive';
 import {TemplatePortal} from '@angular/cdk/portal';
+import {NGPL_FILTER_BASE, NgplFilterBase, NgplFilterService} from 'ngpl-filter';
 
 @UntilDestroy()
 @Component({
@@ -213,11 +214,11 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   @ContentChild(NgplItemTemplateDirective, {static: false})
   itemTemplateRef: NgplItemTemplateDirective;
 
-  @ContentChild(ItemsNotFoundTemplateDirective, {static: false})
-  itemNoFoundTemplateRef: ItemsNotFoundTemplateDirective;
+  @ContentChild(NgplItemsNotFoundTemplateDirective, {static: false})
+  itemNoFoundTemplateRef: NgplItemsNotFoundTemplateDirective;
 
-  @ContentChild(NoItemsTemplateDirective, {static: false})
-  noItemsTemplateRef: NoItemsTemplateDirective;
+  @ContentChild(NgplNoItemsTemplateDirective, {static: false})
+  noItemsTemplateRef: NgplNoItemsTemplateDirective;
 
   constructor(private overlay: Overlay,
               private injector: Injector,
@@ -325,8 +326,9 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
     if (this.disabledControl || this.readOnlyControl || !!this.showLoading) {
       return;
     }
-    if (this.overlayRef.hasAttached())
+    if (this.overlayRef.hasAttached()) {
       this.overlayRef.detach();
+    }
 
     this.overlayRef.attach(new TemplatePortal(
       this.templatePortalContent,
@@ -416,9 +418,9 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   }
 
   onChange: any = () => {
-  };
+  }
   onTouch: any = () => {
-  };
+  }
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -519,4 +521,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
     }
   }
 
+  get minHigth(): any {
+    return this.filteredItems?.length < 5 ? `${this.filteredItems?.length * 48}px` : `240px`;
+  }
 }

@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4200 --base-href /",
-    "build": "ng build --prod --base-href /ngpl-select-multiple.github.io/",
+    "build": "ng build --prod --base-href /ngpl-select-multiple/",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

@@ -60,7 +60,7 @@ export class NgplSelectMultipleComponent implements OnInit, OnChanges, OnDestroy
   /**
    * Ancho del panel del Autocomplete
    */
-  @Input() panelWidth = '250px';
+  @Input() panelWidth = null;
 
   /** Propiedades sobre las que se desea aplicar el filtro en los {@link #items} */
   @Input() filterBy: string | string[] = ['descripcion'];

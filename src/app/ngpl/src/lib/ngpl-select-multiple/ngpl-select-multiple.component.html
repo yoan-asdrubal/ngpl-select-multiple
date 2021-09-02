@@ -20,16 +20,17 @@
 
 </mat-form-field>
 
-<div cdkOverlayOrigin></div>
+<div cdkOverlayOrigin #origin class="origin"></div>
 
 <ng-template #templatePortalContent>
-  <div class="mat-elevation-z8 ngpl-select-multiple-content" [ngplWidth]="panelWidth">
+  <div class="mat-elevation-z8 ngpl-select-multiple-content" [ngplWidth]="panelWidth || (origin.clientWidth || origin.offsetWidth)+'px'">
 
     <div *ngIf="searcheable===true" class="ngpl-select-multiple-search" disabled="disabled"
          (click)="$event.preventDefault()" [class.sticky]="stickSearch">
       <div class="ngpl-select-multiple-search-content">
         <mat-checkbox [disabled]="items?.length===0"
                       (click)="masterToggle($event)  "
+                      color="accent"
                       (change)="masterToggle($event)  "
                       [checked]="itemsSelected.isAllSelected(filteredItems)"
                       [indeterminate]="itemsSelected.hasValue() && !itemsSelected.isAllSelected(filteredItems)">
@@ -59,7 +60,7 @@
           <div>
             <mat-checkbox [checked]="itemsSelected.isSelected(item)"
                           (change)="toogleSelected(item)"
-                          color="primary">
+                          color="accent">
               <ng-container
                 [ngTemplateOutlet]="!!itemTemplateRef ? itemTemplateRef.template : selectMultipleItemTemplate"
                 [ngTemplateOutletContext]="{

@@ -11,6 +11,9 @@
     "build:lib": " cd projects/ngpl && npm version patch &&   cd../.. && ng build ngpl --prod && npm run publish",
     "build:lib:minor": " cd projects/ngpl && npm version minor && cd../.. && ng build ngpl --prod && npm run publish",
     "build:lib:major": " cd projects/ngpl && npm version major && cd../.. && ng build ngpl --prod && npm run publish",
+    "build:doc:deploy:lib": "npm run build && npm run build:lib",
+    "build:doc:deploy:lib:minor": "npm run build && npm run build:lib:minor",
+    "build:doc:deploy:lib:major": "npm run build && npm run build:lib:major",
     "publish": "cd dist/ngpl && npm publish",
     "test:lib": "jest",
     "test:lib:coverage": "jest --coverage"
@@ -30,10 +33,10 @@
     "@angular/platform-browser-dynamic": "~11.0.5",
     "@angular/router": "~11.0.5",
     "@ngneat/until-destroy": "^8.0.3",
-    "ngpl-common": "^2.0.28",
-    "ngpl-filter": "^1.0.6",
+    "ngpl-common": "^2.0.33",
+    "ngpl-filter": "^1.0.7",
     "ngx-reactivetoolkit": "^8.0.2",
-    "rxjs": "~6.6.0",
+    "rxjs": "~6.5.5",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
